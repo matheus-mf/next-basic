@@ -1,15 +1,17 @@
-import {GetServerSideProps} from "next";
+import {GetStaticProps} from "next";
 
-export default function Home({repositories}) {
+export default function Home({repositories, date}) {
   return (
-      <ul>
-          {repositories.map(repo => <li key={repo}>{repo}</li>)}
-      </ul>
+      <>
+          <h1>{date}</h1>
+          <ul>
+              {repositories.map(repo => <li key={repo}>{repo}</li>)}
+          </ul>
+      </>
   )
 }
 
-
-export const getServerSideProps: GetServerSideProps =  async () => {
+export const getStaticProps: GetStaticProps =  async () => {
     const response = await fetch(
         'https://api.github.com/users/matheus-mf/repos')
     const data = await response.json()
@@ -17,8 +19,10 @@ export const getServerSideProps: GetServerSideProps =  async () => {
 
     return {
         props: {
-            repositories: repositoryNames
-        }
+            repositories: repositoryNames,
+            date: new Date().toISOString(),
+        },
+        revalidate: 5,
     }
 
 }
