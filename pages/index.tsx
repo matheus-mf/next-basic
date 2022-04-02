@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps =  async () => {
             repositories: repositoryNames,
             date: new Date().toISOString(),
         },
-        revalidate: 5,
+        revalidate: 60 * 60 * 4, // update every 4 hours
     }
 
 }
